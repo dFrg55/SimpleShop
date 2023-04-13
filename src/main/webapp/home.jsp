@@ -9,12 +9,29 @@
 
 </head>
 <body>
+<form action="j_security_check" method="post">
+  Input for username:<br>
+  <input name="j_username" type="text"><br>
+  Input for password:<br>
+  <input name="j_password" type="password"><br>
+  <input type="submit" value="Авторизироваться">
+</form>
 
+<div id="app">
 
-<div id="app"></div>
+</div>
+
+<!-- js-cookie -->
+<script type="module" src="/js/lib/js.cookie.mjs"></script>
+<script nomodule defer src="/js/lib/js.cookie.js"></script>
+<script type="module">
+  import Cookies from '/js/lib/js.cookie.mjs'
+
+  Cookies.set('foo', 'bar')
+</script>
 
 <!-- jQuery -->
-<script src="js/jquery-3.6.4.min.js"></script>
+<script src="js/lib/jquery-3.6.4.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 
 <!-- bootstrap JavaScript -->

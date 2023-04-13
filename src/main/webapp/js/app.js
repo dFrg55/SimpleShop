@@ -1,6 +1,6 @@
 
     jQuery(($) => {
-
+        Cookies.set('foo', 'bar');
         // HTML приложения
         let app_html = `
             <div class="container">
@@ -11,13 +11,8 @@
                 <!-- Здесь будет показано содержимое страницы -->
                 <div id="page-content"></div>
             </div>`;
-
         // Вставка кода на страницу
         $("#app").html(app_html);
-
-
-
-
     });
 
     // Изменение заголовка страницы

@@ -2,16 +2,12 @@ package model;
 
 import jakarta.persistence.*;
 import jakarta.ws.rs.FormParam;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 
 @Entity
 @Table(name = "item")
-
 @NoArgsConstructor
 @AllArgsConstructor
 public class ItemEntity implements Serializable {

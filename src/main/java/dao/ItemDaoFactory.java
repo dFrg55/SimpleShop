@@ -5,7 +5,7 @@ public class ItemDaoFactory {
     public ItemDao createItemDao (DaoEnum type){
 
         switch (type){
-            case MySQLHiber:
+            case MySQL:
                 break;
             case PostgreHiber:
                 itemDao=(ItemDaoImplPostHiber) new ItemDaoImplPostHiber();

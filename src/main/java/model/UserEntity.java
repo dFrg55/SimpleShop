@@ -31,4 +31,9 @@ public class UserEntity {
     @Setter
     private String password;
 
+    @FormParam("role")
+    @Column(name = "role")
+    @Getter
+    @Setter
+    private String role;
 }
