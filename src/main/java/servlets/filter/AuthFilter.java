@@ -1,10 +1,10 @@
 package servlets.filter;
 
 
-
 import dao.DaoEnum;
 import dao.UserDAO;
 import jakarta.servlet.*;
+import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -17,7 +17,8 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static java.util.Objects.nonNull;
 
-public class AuthFilter implements  Filter {
+@WebFilter("/*")
+public class AuthFilter implements Filter {
     private final UserRepository userRepository = new UserRepository(DaoEnum.PostgreHiber);
 
     @Override
@@ -37,13 +38,16 @@ public class AuthFilter implements  Filter {
         final String login = req.getParameter("j_username");
         final String password = req.getParameter("j_password");
 
-        @SuppressWarnings("unchecked")
-        final AtomicReference<UserDAO> dao = new AtomicReference<UserDAO>();
+        @SuppressWarnings("unchecked") final AtomicReference<UserDAO> dao = new AtomicReference<UserDAO>();
 
         final HttpSession session = req.getSession();
-
+        //todo  разграничить роли
+        if(((HttpServletRequest) request).getRequestURI().matches(".*(css|jpg|png|gif|js|min.js)|(/api/item/getAllItem)")){
+            filterChain.doFilter(request, response);
+            return;
+        }
         //Logged UserEntity.
-         if (nonNull(session) &&
+        if (nonNull(session) &&
                 nonNull(session.getAttribute("j_username")) &&
                 nonNull(session.getAttribute("j_password"))) {
             final String role = (String) session.getAttribute("role");

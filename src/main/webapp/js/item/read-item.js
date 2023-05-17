@@ -1,4 +1,4 @@
-var elementsShoppingCart;
+var elementsShoppingCart=[];
 jQuery(($) => {
 
     // Показать список товаров при первой загрузке
@@ -8,12 +8,21 @@ jQuery(($) => {
     });
 
     $(document).on("click", ".shopping-cart-button", () => {
-        showShoppingCart(elementsShoppingCart);
+        showShoppingCart();
     });
-    $(document).on("click", ".addToShoppingCart-product-button", () => {
-        // Получение данных формы
-        let form_data=JSON.stringify($(this).serializeObject());
-        addElemetInShoppingCart(form_data);
+    $(document).on("click", ".addToShoppingCart-product-button", function () {
+
+        // Получение ID товара
+        const product_id = $(this).attr("data-id");
+        console.log(product_id)
+        let url="api/item/getOneItem/";
+        addElemetInShoppingCart(product_id)
+    });
+    $(document).on("click", ".deleteProductButtonFromShoppingCart", function () {
+        // Получение ID товара
+        const product_id = $(this).attr("data-id");
+        elementsShoppingCart=elementsShoppingCart.filter((n) => {return n.id != product_id})
+        showShoppingCart();
     });
 });
 
@@ -22,6 +31,7 @@ function showProducts() {
 
     fetch(url).then(function (response) {
         response.json().then(function (data) {
+            console.log(JSON.stringify(data))
             let read_products_html = `
                 <!-- При нажатии загружается форма создания товара -->
                 <div id="create-product" class="btn btn-primary pull-right m-b-15px create-product-button">
@@ -81,14 +91,15 @@ function showProducts() {
     });
 }
 
-function showShoppingCart(data) {
+function showShoppingCart() {
+    let data=elementsShoppingCart
     let shopping_cart_html = `
                 <!-- При нажатии загружается форма создания товара -->
                 <div id="create-product" class="btn btn-primary pull-right m-b-15px create-product-button">
                     <span class="glyphicon glyphicon-plus"></span> Создание товара
                 </div>
-                <div  id="shopping-cart" class="btn btn-primary pull-right m-b-15px log-out">
-                    <span class="glyphicon glyphicon-plus""></span> Корзина
+                <div  id="read-products" class="btn btn-primary pull-right m-b-15px read-products-button">
+                    <span class="glyphicon glyphicon-list"></span> Все товары
                 </div>
                 <div  id="log-out" class="btn btn-primary pull-right m-b-15px log-out">
                     <span class="glyphicon glyphicon-plus""></span> Выход
@@ -121,22 +132,25 @@ function showShoppingCart(data) {
                             <button class="btn btn-info m-r-10px update-product-button" data-id="` + data[key].id + `">
                                 <span class="glyphicon glyphicon-edit"></span> Редактирование
                             </button>
-                            <!-- Кнопка добавление в корзину товара -->
-                            <button class="btn btn-info m-r-10px addToShoppingCart-product-button" data-id="` + data[key].id + `">
-                                <span class="glyphicon glyphicon-edit"></span> Добавить в корзину
-                            </button>
                             <!-- Кнопка удаления товара -->
-                            <button class="btn btn-danger delete-product-button" data-id="` + data[key].id + `">
+                            <button class="btn btn-danger deleteProductButtonFromShoppingCart" data-id="` + data[key].id + `">
                                 <span class="glyphicon glyphicon-remove"></span> Удаление
                             </button>
                         </td>
-                    </tr>`;
+                    </tr>   `;
     };
 
     shopping_cart_html += `</table>`;
     $("#page-content").html(shopping_cart_html);
-    changePageTitle("Все товары");
+    changePageTitle("Корзина");
 }
-function addElemetInShoppingCart(element){
-    elementsShoppingCart.general_array.push(element);
+function addElemetInShoppingCart(id){
+    let url="api/item/getOneItem/";
+    fetch(url+id).then(function(response) {
+        response.json().then(function(data) {
+            console.log(JSON.stringify(data))
+            elementsShoppingCart.push(data);
+            console.log(JSON.stringify(elementsShoppingCart))
+        });
+    });
 }
