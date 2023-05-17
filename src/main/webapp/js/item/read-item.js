@@ -1,3 +1,4 @@
+var elementsShoppingCart;
 jQuery(($) => {
 
     // Показать список товаров при первой загрузке
@@ -5,18 +6,28 @@ jQuery(($) => {
     $(document).on("click", ".read-products-button", () => {
         showProducts();
     });
-});
-function showProducts() {
-    const url="api/item/getAllItem";
 
-    fetch(url).then(function(response) {
-        response.json().then(function(data) {
+    $(document).on("click", ".shopping-cart-button", () => {
+        showShoppingCart(elementsShoppingCart);
+    });
+    $(document).on("click", ".addToShoppingCart-product-button", () => {
+        // Получение данных формы
+        let form_data=JSON.stringify($(this).serializeObject());
+        addElemetInShoppingCart(form_data);
+    });
+});
+
+function showProducts() {
+    const url = "api/item/getAllItem";
+
+    fetch(url).then(function (response) {
+        response.json().then(function (data) {
             let read_products_html = `
                 <!-- При нажатии загружается форма создания товара -->
                 <div id="create-product" class="btn btn-primary pull-right m-b-15px create-product-button">
                     <span class="glyphicon glyphicon-plus"></span> Создание товара
                 </div>
-                <div  id="shopping-cart" class="btn btn-primary pull-right m-b-15px log-out">
+                <div  id="shopping-cart" class="btn btn-primary pull-right m-b-15px shopping-cart-button">
                     <span class="glyphicon glyphicon-plus""></span> Корзина
                 </div>
                 <div  id="log-out" class="btn btn-primary pull-right m-b-15px log-out">
@@ -33,7 +44,7 @@ function showProducts() {
                 </tr>`;
 
             // Перебор списка возвращаемых данных
-            for (let key in data){
+            for (let key in data) {
                 // Создание новой строки таблицы для каждой записи
                 read_products_html += `
                     <tr>
@@ -68,4 +79,64 @@ function showProducts() {
 
         });
     });
+}
+
+function showShoppingCart(data) {
+    let shopping_cart_html = `
+                <!-- При нажатии загружается форма создания товара -->
+                <div id="create-product" class="btn btn-primary pull-right m-b-15px create-product-button">
+                    <span class="glyphicon glyphicon-plus"></span> Создание товара
+                </div>
+                <div  id="shopping-cart" class="btn btn-primary pull-right m-b-15px log-out">
+                    <span class="glyphicon glyphicon-plus""></span> Корзина
+                </div>
+                <div  id="log-out" class="btn btn-primary pull-right m-b-15px log-out">
+                    <span class="glyphicon glyphicon-plus""></span> Выход
+                </div>
+                <!-- Таблица товаров -->
+                <table class="table table-bordered table-hover">
+            
+                <!-- Создание заголовков таблицы -->
+                <tr>
+                    <th class="w-15-pct">Название</th>
+                    <th class="w-10-pct">Цена</th>
+                    <th class="w-25-pct text-align-center">Действие</th>
+                </tr>`;
+
+    // Перебор списка возвращаемых данных
+    for (let key in data) {
+        // Создание новой строки таблицы для каждой записи
+        shopping_cart_html += `
+                    <tr>
+                        <td>` + data[key].name + `</td>
+                        <td>` + data[key].price + `</td>
+                
+                        <!-- Кнопки "действий" -->
+                        <td>
+                            <!-- Кнопка чтения товара -->
+                            <button class="btn btn-primary m-r-10px read-one-product-button" data-id="` + data[key].id + `">
+                                <span class="glyphicon glyphicon-eye-open"></span> Просмотр
+                            </button>
+                            <!-- Кнопка редактирования -->
+                            <button class="btn btn-info m-r-10px update-product-button" data-id="` + data[key].id + `">
+                                <span class="glyphicon glyphicon-edit"></span> Редактирование
+                            </button>
+                            <!-- Кнопка добавление в корзину товара -->
+                            <button class="btn btn-info m-r-10px addToShoppingCart-product-button" data-id="` + data[key].id + `">
+                                <span class="glyphicon glyphicon-edit"></span> Добавить в корзину
+                            </button>
+                            <!-- Кнопка удаления товара -->
+                            <button class="btn btn-danger delete-product-button" data-id="` + data[key].id + `">
+                                <span class="glyphicon glyphicon-remove"></span> Удаление
+                            </button>
+                        </td>
+                    </tr>`;
+    };
+
+    shopping_cart_html += `</table>`;
+    $("#page-content").html(shopping_cart_html);
+    changePageTitle("Все товары");
+}
+function addElemetInShoppingCart(element){
+    elementsShoppingCart.general_array.push(element);
 }
