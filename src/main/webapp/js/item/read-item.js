@@ -50,6 +50,10 @@ function showProducts() {
                             <button class="btn btn-info m-r-10px update-product-button" data-id="` + data[key].id + `">
                                 <span class="glyphicon glyphicon-edit"></span> Редактирование
                             </button>
+                            <!-- Кнопка добавление в корзину товара -->
+                            <button class="btn btn-info m-r-10px addToShoppingCart-product-button" data-id="` + data[key].id + `">
+                                <span class="glyphicon glyphicon-edit"></span> Добавить в корзину
+                            </button>
                             <!-- Кнопка удаления товара -->
                             <button class="btn btn-danger delete-product-button" data-id="` + data[key].id + `">
                                 <span class="glyphicon glyphicon-remove"></span> Удаление
