@@ -3,6 +3,7 @@ package controller;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dao.DaoEnum;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.RequestScoped;
 
 import jakarta.ws.rs.*;
@@ -14,7 +15,6 @@ import repository.ItemRepository;
 import java.util.List;
 
 @Path("item")
-
 @RequestScoped
 public class ItemController {
     private final Gson gson = new Gson();

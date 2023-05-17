@@ -4,7 +4,7 @@ jQuery(($) => {
     $(document).on("click", ".create-product-button", () => {
 
 
-        let create_product_html=`
+        let read_item_html=`
             <!-- Кнопка для показа всех товаров -->
             <div id="read-products" class="btn btn-primary pull-right m-b-15px read-products-button">
                 <span class="glyphicon glyphicon-list"></span> Все товары
@@ -42,7 +42,7 @@ jQuery(($) => {
         `;
 
         // Вставка html в «page-content» нашего приложения
-        $("#page-content").html(create_product_html);
+        $("#page-content").html(read_item_html);
         // Изменяем тайтл
         changePageTitle("Создание товара");
     });

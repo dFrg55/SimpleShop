@@ -16,6 +16,12 @@ function showProducts() {
                 <div id="create-product" class="btn btn-primary pull-right m-b-15px create-product-button">
                     <span class="glyphicon glyphicon-plus"></span> Создание товара
                 </div>
+                <div  id="shopping-cart" class="btn btn-primary pull-right m-b-15px log-out">
+                    <span class="glyphicon glyphicon-plus""></span> Корзина
+                </div>
+                <div  id="log-out" class="btn btn-primary pull-right m-b-15px log-out">
+                    <span class="glyphicon glyphicon-plus""></span> Выход
+                </div>
                 <!-- Таблица товаров -->
                 <table class="table table-bordered table-hover">
             

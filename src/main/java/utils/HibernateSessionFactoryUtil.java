@@ -1,6 +1,7 @@
 package utils;
 
 import model.ItemEntity;
+import model.UserEntity;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
@@ -15,7 +16,9 @@ public  class HibernateSessionFactoryUtil {
             try {
 
                 Configuration configuration = new Configuration().configure("META-INF/hibernate.cfg.xml");
+                //Классы сущности
                 configuration.addAnnotatedClass(ItemEntity.class);
+                configuration.addAnnotatedClass(UserEntity.class);
                 StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()
                         .applySettings(configuration.getProperties());
                 sessionFactory = configuration.buildSessionFactory(builder.build());

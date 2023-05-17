@@ -1,3 +1,5 @@
+package servlets;
+
 import com.google.gson.Gson;
 import dao.DaoEnum;
 import jakarta.servlet.ServletException;
@@ -11,7 +13,7 @@ import repository.ItemRepository;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "MainServlet", urlPatterns = "/index")
+@WebServlet(name = "servlets.MainServlet", urlPatterns = "/index")
 public class MainServlet extends HttpServlet {
     private final Gson gson = new Gson();
     protected void doGet(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {

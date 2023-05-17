@@ -7,17 +7,19 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 @Entity
-@Table(name = "user")
-@AllArgsConstructor
+@Table(name = "usershop")
 @NoArgsConstructor
-public class UserEntity {
+@AllArgsConstructor
+public class UserEntity implements Serializable {
     @Id
     @FormParam("id")
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter
-    private Long id;
+    private Integer id;
 
     @FormParam("login")
     @Column(name = "login")
@@ -36,4 +38,5 @@ public class UserEntity {
     @Getter
     @Setter
     private String role;
+
 }

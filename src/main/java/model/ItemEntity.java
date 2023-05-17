@@ -51,4 +51,5 @@ public class ItemEntity implements Serializable {
                 ", description='" + description + '\'' +
                 '}';
     }
+
 }

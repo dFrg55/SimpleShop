@@ -44,7 +44,7 @@ public class ItemDaoImplPostHiber implements ItemDao<ItemEntity> {
         Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
 
         // Создать HQL-запрос
-        Query query = session.createQuery("from ItemEntity");
+        Query query = session.createQuery("from ItemEntity order by name");
 
         // Получить список результатов
         List<ItemEntity> result = query.list();
