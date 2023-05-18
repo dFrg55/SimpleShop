@@ -8,8 +8,6 @@ import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import model.UserEntity;
-import repository.ItemRepository;
 import repository.UserRepository;
 
 import java.io.IOException;
@@ -42,10 +40,11 @@ public class AuthFilter implements Filter {
 
         final HttpSession session = req.getSession();
         //todo  разграничить роли
-        if(((HttpServletRequest) request).getRequestURI().matches(".*(css|jpg|png|gif|js|min.js)|(/api/item/getAllItem)")){
+        if (((HttpServletRequest) request).getRequestURI().matches(".*(css|jpg|png|gif|js|min\\.js)|(/logout)")) {
             filterChain.doFilter(request, response);
             return;
         }
+        
         //Logged UserEntity.
         if (nonNull(session) &&
                 nonNull(session.getAttribute("j_username")) &&
@@ -53,7 +52,7 @@ public class AuthFilter implements Filter {
             final String role = (String) session.getAttribute("role");
 
 
-            moveToMenu(req, res, role);
+            moveToMenu(req, res, role,filterChain);
 
 
         } else if (userRepository.userIsExist(login, password)) {
@@ -63,32 +62,40 @@ public class AuthFilter implements Filter {
             req.getSession().setAttribute("j_username", login);
             req.getSession().setAttribute("role", role);
 
-            moveToMenu(req, res, role);
+            moveToMenu(req, res, role, filterChain);
 
         } else {
 
-            moveToMenu(req, res, "UNKNOWN");
+            moveToMenu(req, res, "UNKNOWN", filterChain);
         }
     }
 
-    private void moveToMenu(final HttpServletRequest req,
-                            final HttpServletResponse res,
-                            final String role)
+    private void moveToMenu(final HttpServletRequest request,
+                            final HttpServletResponse response,
+                            final String role,
+                            final FilterChain filterChain)
             throws ServletException, IOException {
 
 
         if (role.equals("admin")) {
-
-            req.getRequestDispatcher("/home").forward(req, res);
-
+            if (((HttpServletRequest) request).getRequestURI().matches("(/api/).*")) {
+                filterChain.doFilter(request, response);
+            }
+            else {
+                request.getRequestDispatcher("/home").forward(request, response);
+            }
         } else if (role.equals("user")) {
-
-            req.getRequestDispatcher("/home").forward(req, res);
-
+            if (((HttpServletRequest) request).getRequestURI().matches("(/api/item/getAllItem)|(/api/item/getOneItem/.*)")) {
+                filterChain.doFilter(request, response);
+            }
+            else {
+                request.getRequestDispatcher("/home").forward(request, response);
+            }
         } else {
-            req.getSession().invalidate();
-            req.getRequestDispatcher("allUsers/login-page.jsp").forward(req, res);
+            request.getSession().invalidate();
+            request.getRequestDispatcher("allUsers/login-page.jsp").forward(request, response);
         }
+
     }
 
 
