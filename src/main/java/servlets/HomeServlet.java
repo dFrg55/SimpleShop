@@ -1,3 +1,5 @@
+package servlets;
+
 import com.google.gson.Gson;
 import dao.DaoEnum;
 import jakarta.servlet.ServletException;
@@ -11,7 +13,7 @@ import repository.ItemRepository;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "HomeServlet", urlPatterns = "/home")
+@WebServlet(name = "servlets.HomeServlet", urlPatterns = "/home")
 public class HomeServlet extends HttpServlet {
 
     private final Gson gson = new Gson();
@@ -23,7 +25,7 @@ public class HomeServlet extends HttpServlet {
         List<ItemEntity> item = itemService.findAllItem();
         String json = gson.toJson(item);
         req.setAttribute("itemJson", json);
-        req.getRequestDispatcher("secure/home.jsp").forward(req, resp);
+        req.getRequestDispatcher("allUsers/home.jsp").forward(req, resp);
 //        if(req.getSession().getAttribute("role")==null){
 //            req.getRequestDispatcher("secure/login-page.jsp").forward(req, resp);
 //        }
@@ -32,7 +34,7 @@ public class HomeServlet extends HttpServlet {
 //            req.getRequestDispatcher("secure/home.jsp").forward(req, resp);
 //        } else if (req.getSession().getAttribute("role").equals("user")) {
 //            req.setAttribute("itemJson", json);
-//            req.getRequestDispatcher("secure/index.jsp").forward(req, resp);
+//            req.getRequestDispatcher("secure/homeSecure.jsp").forward(req, resp);
 //        }
 //        else {
 //            req.getSession().invalidate();

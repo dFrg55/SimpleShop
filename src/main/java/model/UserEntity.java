@@ -39,4 +39,10 @@ public class UserEntity implements Serializable {
     @Setter
     private String role;
 
+    @FormParam("token")
+    @Column(name = "token")
+    @Getter
+    @Setter
+    private String token;
+
 }

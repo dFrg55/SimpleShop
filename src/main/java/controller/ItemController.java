@@ -33,7 +33,7 @@ public class ItemController {
     }
 
 
-    @Path("saveItem")
+    @Path("secure/saveItem")
     @POST
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes(MediaType.APPLICATION_JSON)
@@ -61,7 +61,8 @@ public class ItemController {
         Gson gsonItem = builder.create();
         return gsonItem.toJson(itemRepository.findItem(Integer.valueOf(id)));
     }
-    @Path("deleteItem/{id}")
+    @RolesAllowed("admin")
+    @Path("secure/deleteItem/{id}")
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)

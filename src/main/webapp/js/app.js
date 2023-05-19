@@ -1,5 +1,5 @@
     jQuery(($) => {
-    setCookie('token','1',7);
+    // setCookie('token','1',7);
         // HTML приложения
         let app_html = `
             <div class="container">

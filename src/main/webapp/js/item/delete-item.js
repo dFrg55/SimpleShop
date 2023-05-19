@@ -5,7 +5,7 @@ jQuery($ => {
 
         // Получение ID товара
         const product_id = $(this).attr("data-id");
-        const url="api/item/deleteItem/";
+        const url="api/item/secure/deleteItem/";
         // Bootbox для подтверждения во всплывающем окне
         bootbox.confirm({
             message: "<h4>Вы уверены?</h4>",

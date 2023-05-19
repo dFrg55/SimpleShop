@@ -75,7 +75,7 @@ jQuery($ => {
         let form_data=JSON.stringify($(this).serializeObject());
 
 
-        const url="api/item/saveItem";
+        const url="api/item/secure/saveItem";
 
         const response = fetch(url, {
             method: 'POST', // или 'PUT'

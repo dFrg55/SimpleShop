@@ -31,7 +31,6 @@ function showProducts() {
 
     fetch(url).then(function (response) {
         response.json().then(function (data) {
-            console.log(JSON.stringify(data))
             let read_products_html = `
                 <!-- При нажатии загружается форма создания товара -->
                 <div id="create-product" class="btn btn-primary pull-right m-b-15px create-product-button">

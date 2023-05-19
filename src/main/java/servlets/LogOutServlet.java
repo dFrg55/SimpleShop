@@ -1,3 +1,5 @@
+package servlets;
+
 import jakarta.security.enterprise.authentication.mechanism.http.FormAuthenticationMechanismDefinition;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

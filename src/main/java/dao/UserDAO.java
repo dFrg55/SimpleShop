@@ -8,7 +8,7 @@ import utils.HibernateSessionFactoryUtil;
 
 import java.util.List;
 
-public class UserDAO implements ItemDao<UserEntity>{
+public class UserDAO implements ItemDao<UserEntity> {
 
     @Override
     public UserEntity findById(int id) {
@@ -42,7 +42,7 @@ public class UserDAO implements ItemDao<UserEntity>{
         Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
 
         // Создать HQL-запрос
-        Query query = session.createQuery("from UserEntity order by name");
+        Query query = session.createQuery("from UserEntity ");
 
         // Получить список результатов
         List<UserEntity> result = query.list();
@@ -159,8 +159,8 @@ public class UserDAO implements ItemDao<UserEntity>{
         return result.stream().findFirst().get().getRole();
     }
 
-    public static boolean userIsExist(final String login, final String password) {
-        if(login==null&&password==null){
+    public  boolean userIsExist(final String login, final String password) {
+        if (login == null && password == null) {
             return false;
         }
 
@@ -189,9 +189,67 @@ public class UserDAO implements ItemDao<UserEntity>{
         // Закрыть сессию
         session.close();
 
-        if (resultList==null)
-            return false;
-        else
+        if (resultList != null && !resultList.isEmpty())
             return true;
+        else
+            return false;
+    }
+    public  UserEntity findUserByLoginAndPasword(final String login, final String password) {
+        if (login == null && password == null) {
+            return null;
+        }
+
+        // Получить сессию Hibernate
+        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+
+        // Начать транзакцию
+        Transaction tx = session.beginTransaction();
+
+
+        // Создать HQL-запрос
+//        Query query = session.createQuery("from UserEntity  where login = 'admin' and password='123'");
+        Query query = session.createQuery("from UserEntity  where login = :login and password=:password");
+
+        query.setParameter("login", login);
+        query.setParameter("password", password);
+
+
+        // Получить список результатов
+        List<UserEntity> result = query.list();
+
+        // Завершить транзакцию
+        tx.commit();
+
+        // Закрыть сессию
+        session.close();
+
+        return result.stream().findFirst().orElse(null);
+    }
+    public String getRoleByToken(String token){
+
+        // Получить сессию Hibernate
+        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+
+        // Начать транзакцию
+        Transaction tx = session.beginTransaction();
+
+
+        // Создать HQL-запрос
+//        Query query = session.createQuery("from UserEntity  where login = 'admin' and password='123'");
+        Query query = session.createQuery("select role from UserEntity  where token = :token ");
+
+        query.setParameter("token", token);
+
+
+        // Получить список результатов
+        List<String> result = query.list();
+
+        // Завершить транзакцию
+        tx.commit();
+
+        // Закрыть сессию
+        session.close();
+
+        return result.stream().findFirst().orElse("");
     }
 }

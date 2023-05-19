@@ -47,5 +47,11 @@ public class UserRepository {
     public  boolean userIsExist(final String login, final String password) {
         return userDAO.userIsExist( login,  password);
     }
+    public UserEntity findUserByLoginAndPasword(final String login, final String password){
+        return userDAO.findUserByLoginAndPasword( login,  password);
+    }
+    public String getRoleByToken(String Token){
+        return userDAO.getRoleByToken(Token);
+    }
 
 }

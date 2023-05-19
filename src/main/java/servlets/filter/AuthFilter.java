@@ -8,9 +8,12 @@ import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import model.Token;
+import model.UserEntity;
 import repository.UserRepository;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static java.util.Objects.nonNull;
@@ -18,6 +21,7 @@ import static java.util.Objects.nonNull;
 @WebFilter("/*")
 public class AuthFilter implements Filter {
     private final UserRepository userRepository = new UserRepository(DaoEnum.PostgreHiber);
+    private Map<String, String> tokenMap;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -36,31 +40,36 @@ public class AuthFilter implements Filter {
         final String login = req.getParameter("j_username");
         final String password = req.getParameter("j_password");
 
-        @SuppressWarnings("unchecked") final AtomicReference<UserDAO> dao = new AtomicReference<UserDAO>();
 
         final HttpSession session = req.getSession();
-        //todo  разграничить роли
-        if (((HttpServletRequest) request).getRequestURI().matches(".*(css|jpg|png|gif|js|min\\.js)|(/logout)")) {
+        if (((HttpServletRequest) request).getRequestURI().matches("(.*\\.(css|jpg|png|gif|js|min\\.js))|(/logout)")) {
             filterChain.doFilter(request, response);
             return;
         }
-        
+
         //Logged UserEntity.
-        if (nonNull(session) &&
-                nonNull(session.getAttribute("j_username")) &&
-                nonNull(session.getAttribute("j_password"))) {
-            final String role = (String) session.getAttribute("role");
-
-
-            moveToMenu(req, res, role,filterChain);
+        if (session!=null &&
+                session.getAttribute("access_token")!=null)
+//                nonNull(session.getAttribute("j_username")) &&
+//                nonNull(session.getAttribute("j_password")))
+        {
+            final String role = userRepository.getRoleByToken(session.getAttribute("access_token").toString());
+//            final String role = (String) session.getAttribute("role");
+            moveToMenu(req, res, role, filterChain);
 
 
         } else if (userRepository.userIsExist(login, password)) {
 
             final String role = userRepository.getRoleByLoginPassword(login, password);
-            req.getSession().setAttribute("j_password", password);
-            req.getSession().setAttribute("j_username", login);
-            req.getSession().setAttribute("role", role);
+
+            Token token = new Token(login, role);
+            UserEntity userEntity=userRepository.findUserByLoginAndPasword(login,password);
+            userEntity.setToken(token.getToken());
+            userRepository.update(userEntity);
+            req.getSession().setAttribute("access_token", token.getToken());
+//            req.getSession().setAttribute("j_password", password);
+//            req.getSession().setAttribute("j_username", login);
+//            req.getSession().setAttribute("role", role);
 
             moveToMenu(req, res, role, filterChain);
 
@@ -80,15 +89,14 @@ public class AuthFilter implements Filter {
         if (role.equals("admin")) {
             if (((HttpServletRequest) request).getRequestURI().matches("(/api/).*")) {
                 filterChain.doFilter(request, response);
-            }
-            else {
-                request.getRequestDispatcher("/home").forward(request, response);
+            } else {
+                request.getRequestDispatcher("secure-page").forward(request, response);
             }
         } else if (role.equals("user")) {
-            if (((HttpServletRequest) request).getRequestURI().matches("(/api/item/getAllItem)|(/api/item/getOneItem/.*)")) {
+            if (((HttpServletRequest) request).getRequestURI().matches("^(?!.*\\/secure).*")) {
+//            if (((HttpServletRequest) request).getRequestURI().matches("(/api/item/getAllItem)|(/api/item/getOneItem/.*)")) {
                 filterChain.doFilter(request, response);
-            }
-            else {
+            } else {
                 request.getRequestDispatcher("/home").forward(request, response);
             }
         } else {
