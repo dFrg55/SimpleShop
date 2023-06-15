@@ -14,14 +14,11 @@ import repository.UserRepository;
 
 import java.io.IOException;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 
-import static java.util.Objects.nonNull;
 
 @WebFilter("/*")
 public class AuthFilter implements Filter {
     private final UserRepository userRepository = new UserRepository(DaoEnum.PostgreHiber);
-    private Map<String, String> tokenMap;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {

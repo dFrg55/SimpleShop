@@ -22,25 +22,25 @@
         crossorigin="anonymous"></script>
 
 <!-- bootstrap JavaScript -->
+<script src="../js/lib/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
         integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
         crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
-<script src="../js/lib/bootstrap.min.js"></script>
+
 
 <!-- JS для всплывающих окон -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
 
 <!-- основной файл скриптов -->
 <script src="../js/app.js"></script>
-<%--<script src="../js/app.js" type="module"></script>--%>
 
 <!-- item scripts -->
 <script src="../js/item/read-item-users.js"></script>
-<%--<script src="../js/item/create-item.js"></script>--%>
 <script src="../js/item/read-one-item.js"></script>
+<%--<script src="../js/item/create-item.js"></script>--%>
 <%--<script src="../js/item/update-item.js"></script>--%>
 <%--<script src="../js/item/delete-item.js"></script>--%>
 

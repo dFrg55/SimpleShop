@@ -49,7 +49,7 @@ function showProducts() {
                 <tr>
                     <th class="w-15-pct">Название</th>
                     <th class="w-10-pct">Цена</th>
-                    <th class="w-25-pct text-align-center">Действие</th>
+                    <th class="w-55-pct text-align-center">Действие</th>
                 </tr>`;
 
             // Перебор списка возвращаемых данных
